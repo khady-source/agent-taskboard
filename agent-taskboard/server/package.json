@@ -1,0 +1,41 @@
+{
+  "name": "agent-taskboard-server",
+  "version": "1.0.0",
+  "description": "REST API and MCP server for the Agent Taskboard",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env --watch --import tsx src/index.ts",
+    "mcp": "node --env-file-if-exists=.env --import tsx src/mcp-stdio.ts",
+    "demo": "node --env-file-if-exists=.env --import tsx scripts/demo.ts",
+    "build": "tsc && cp src/schema.sql dist/schema.sql",
+    "start": "node --env-file-if-exists=.env dist/index.js",
+    "typecheck": "tsc -p tsconfig.check.json",
+    "test": "vitest run"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "@types/pg": "^8.23.1",
+    "@types/supertest": "^7.2.1",
+    "supertest": "^7.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.9"
+  }
+}

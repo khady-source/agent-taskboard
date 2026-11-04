@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: taskboard
+          POSTGRES_PASSWORD: taskboard
+          POSTGRES_DB: taskboard_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U taskboard"
+          --health-interval 2s
+          --health-retries 15
+    env:
+      TEST_DATABASE_URL: postgres://taskboard:taskboard@localhost:5432/taskboard_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Server — install, typecheck, test
+        working-directory: server
+        run: |
+          npm ci
+          npm run typecheck
+          npm test
+      - name: Web — install and build
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
